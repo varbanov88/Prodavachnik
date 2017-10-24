@@ -18,11 +18,19 @@
     <a href="#" id="linkRegister" class="menu-item">Register</a>
     <a href="#" id="linkListAds" class="menu-item">List Advertisments</a>
 	<a href="#" id="linkCreateAd" class="menu-item">Create Advertisement</a>
+
     <a href="#" id="linkLogout" class="menu-item">Logout</a>
+    <span id="loggedInUser" class="menu-item"></span>
     <div></div>
 </header>
 
 <main>
+    <section id="loadingBox" class="loadingBox">Loading ...</section>
+
+    <section id="infoBox" class="infoBox">Info</section>
+
+    <section id="errorBox" class="errorBox">Error</section>
+
     <section id="viewHome" class="viewHome">
         <h1 class="title">Welcome</h1>
         <p class="body-text">Welcome to our advertisement site.</p>
@@ -51,7 +59,7 @@
     </section>
 
     <section id="viewAds" class="viewAds">
-        <h1 class="titleForm">Advertisments</h1>
+        <h1 class="titleForm">Advertisements</h1>
         <div id="ads" class="ads">
             <table>
                 <tr>
