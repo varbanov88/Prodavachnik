@@ -7,9 +7,11 @@
                 creator: 0
             },
             title: "XBoss 1080",
+			description: "Modded gaming console",
             publisher: "Pesho",
             datePublished: "2017-06-04",
-            price: 100
+            price: 100,
+			image: "./static/fuze-f1.png"
         }
     ];
 
@@ -96,7 +98,7 @@
     //Get user info
     $.mockjax(function (requestSettings){
         if (requestSettings.url.match(/https:\/\/mock\.api\/user\/kid_rk\/(.+)/)){
-            let userId = 
+            let userId =
     requestSettings.url.match(/https:\/\/mock\.api\.com\/user\/kid_rk\/(.+)/)[1];
             return {
                 response: function (origSettings) {
@@ -129,6 +131,25 @@
         }
     });
 
+	// Load single advert
+    $.mockjax(function (requestSettings) {
+        if (requestSettings.url.match(/https:\/\/mock\.api\.com\/appdata\/kid_rk\/adverts\/(.+)/) &&
+            requestSettings.method === "GET") {
+            let advertId = Number(requestSettings.url.match(/https:\/\/mock\.api\.com\/appdata\/kid_rk\/adverts\/(.+)/)[1]);
+            return {
+                response: function (origSettings) {
+                    if (requestSettings.headers["Authorization"].includes("Kinvey mock_token")) {
+                        let advert = adverts.filter(a => a._id === advertId);
+                        this.responseText = advert.shift();
+                    } else {
+                        this.status = 403;
+                        this.responseText = "You are not authorized";
+                    }
+                }
+            };
+        }
+    });
+
      // Create advert
      $.mockjax(function (requestSettings) {
         if (requestSettings.url === "https://mock.api.com/appdata/kid_rk/adverts" &&
@@ -149,7 +170,8 @@
                                 creator: creator
                             },
                             title: data.title,
-                            publisher: data.publisher,
+                            description: data.description,
+							publisher: data.publisher,
                             datePublished: data.datePublished,
                             price: data.price
                         };
@@ -197,10 +219,12 @@
                         if (advert.length > 0) {
                             advert = advert[0];
                             advert.title = data.title;
-                            advert.publisher = data.publisher;
+                            advert.description = data.description;
+							advert.publisher = data.publisher;
                             advert.datePublished = data.datePublished;
                             advert.price = data.price;
-                            this.responseText = advert;
+                            advert.image = data.image;
+							this.responseText = advert;
                         }
                         this.responseText = {};
                     } else {
